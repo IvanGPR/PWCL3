@@ -1,0 +1,200 @@
+
+#app {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+  padding: 24px 0 40px;
+}
+
+#cocktails {
+  margin: 0 0 28px;
+  color: #ed7d31;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+#buscador,
+#filtroCategorias {
+  margin-bottom: 24px;
+}
+
+#buscador label,
+#filtroCategorias label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#buscador form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#selecCocktail {
+  flex: 1;
+  min-width: 180px;
+}
+
+#selectorCategorias {
+  width: 100%;
+  max-width: 400px;
+}
+
+#estadoCategorias {
+  margin-top: 10px;
+  color: #8b4216;
+}
+
+#reintentarCategorias {
+  margin-top: 10px;
+}
+
+#tituloCocktail {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#resultados {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.tarjeta-cocktail,
+.detalle-cocktail,
+.resumen-categorias {
+  padding: 18px;
+  border: 1px solid #f0d8c3;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 6%);
+}
+
+.tarjeta-cocktail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta-cocktail h2 {
+  margin: 0;
+  color: #bd581b;
+  font-size: 1.25rem;
+}
+
+.tarjeta-cocktail img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.tarjeta-cocktail p {
+  margin: 0;
+}
+
+.tarjeta-cocktail button {
+  margin-top: auto;
+}
+
+.resumen-categorias {
+  grid-column: 1 / -1;
+}
+
+.resumen-categorias h2 {
+  margin-top: 0;
+  color: #bd581b;
+}
+
+.resumen-categorias ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding-left: 20px;
+}
+
+.detalle-cocktail {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.detalle-cocktail h2,
+.detalle-cocktail h3 {
+  color: #bd581b;
+}
+
+.detalle-cocktail h3 {
+  margin-top: 24px;
+}
+
+.detalle-cocktail img {
+  display: block;
+  width: min(100%, 400px);
+  margin: 16px auto;
+  border-radius: 10px;
+}
+
+.detalle-cocktail li {
+  margin-bottom: 8px;
+}
+
+.detalle-cocktail p {
+  line-height: 1.6;
+}
+
+.detalle-cocktail button {
+  margin-top: 16px;
+}
+
+.boton-favoritos {
+  background-color: #8b4216;
+}
+
+.boton-favorito {
+  background-color: #a35a38;
+}
+
+.indicador-carga {
+  font-weight: bold;
+}
+
+.indicador-carga::before {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 10px;
+  border: 3px solid #f0d8c3;
+  border-top-color: #ed7d31;
+  border-radius: 50%;
+  content: "";
+  vertical-align: -3px;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  #app {
+    width: 90%;
+    padding-top: 18px;
+  }
+
+  #buscador form {
+    flex-direction: column;
+  }
+
+  #selecCocktail,
+  #buscador button {
+    width: 100%;
+  }
+
+  #resultados {
+    grid-template-columns: 1fr;
+  }
+}
