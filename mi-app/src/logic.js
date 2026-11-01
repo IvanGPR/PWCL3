@@ -5,12 +5,11 @@ export function obtenerCategoriasValidas(datos) {
   }
 
   return datos
-    .filter((categoria) => {
-      return categoria &&
-        typeof categoria.strCategory === 'string';
-    })
+    .filter((categoria) =>
+      typeof categoria?.strCategory === 'string'
+    )
     .map((categoria) => categoria.strCategory)
-    .filter((categoria) => categoria.trim() !== '');
+    .filter((nombre) => nombre.trim() !== '');
 }
 
 export function ordenarCocktails(cocktails) {
@@ -18,32 +17,20 @@ export function ordenarCocktails(cocktails) {
     return [];
   }
 
-  const cocktailsValidos = cocktails.filter((cocktail) => {
-    return (
-      cocktail &&
-      typeof cocktail.strDrink === 'string' &&
-      cocktail.strDrink.trim() !== ''
+  return cocktails
+    .filter((cocktail) =>
+      typeof cocktail?.strDrink === 'string'
+    )
+    .sort((a, b) =>
+      a.strDrink.localeCompare(b.strDrink)
     );
-  });
-
-  return cocktailsValidos.toSorted((a, b) => {
-    return a.strDrink.localeCompare(b.strDrink, 'en');
-  });
 }
 
 export function contarCocktailsPorCategoria(cocktails) {
-  if (!Array.isArray(cocktails)) {
-    return {};
-  }
-
   return cocktails.reduce((recuento, cocktail) => {
-    const categoria = cocktail.strCategory || 'Sin categoria';
+    const categoria = cocktail.strCategory || 'Sin categoría';
 
-    if (!recuento[categoria]) {
-      recuento[categoria] = 0;
-    }
-
-    recuento[categoria]++;
+    recuento[categoria] = (recuento[categoria] || 0) + 1;
 
     return recuento;
   }, {});
@@ -51,35 +38,35 @@ export function contarCocktailsPorCategoria(cocktails) {
 
 export function obtenerMensajeResultados(cantidad, nombre) {
   if (cantidad === 0) {
-    return `No se han encontrado cocteles para "${nombre}"`;
+    return `No se han encontrado cócteles para "${nombre}"`;
   }
 
   if (cantidad === 1) {
-    return 'Se ha encontrado 1 coctel';
+    return 'Se ha encontrado 1 cóctel';
   }
 
-  return `Se han encontrado ${cantidad} cocteles`;
+  return `Se han encontrado ${cantidad} cócteles`;
 }
 
 export function obtenerMensajeCategoria(categoria, cantidad) {
   if (cantidad === 0) {
-    return `No se han encontrado cocteles en la categoria ${categoria}`;
+    return `No se han encontrado cócteles en la categoría ${categoria}`;
   }
 
-  return `Cocteles de la categoria ${categoria}: ${cantidad}`;
+  return `Cócteles de la categoría ${categoria}: ${cantidad}`;
 }
 
 export function obtenerMensajeError(error) {
   if (error.tipo === 'red') {
-    return 'Error de conexion. Comprueba tu conexion a Internet.';
+    return 'Error de conexión. Comprueba tu conexión a Internet.';
   }
 
   if (error.tipo === 'http') {
-    return 'Error del servidor. Intentalo de nuevo.';
+    return 'Error del servidor. Inténtalo de nuevo.';
   }
 
   if (error.tipo === 'datos') {
-    return 'Los datos recibidos no son validos.';
+    return 'Los datos recibidos no son válidos.';
   }
 
   return 'Ha ocurrido un error inesperado.';
