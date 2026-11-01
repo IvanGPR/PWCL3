@@ -25,17 +25,7 @@ import ListaCocktails from './components/ListaCocktails.jsx';
 import DetalleCocktail from './components/DetalleCocktail.jsx';
 import ResumenCategorias from './components/ResumenCategorias.jsx';
 
-function leerFavoritos() {
-  try {
-    const datos = JSON.parse(
-      localStorage.getItem('cocktailWiki:favoritos') || '[]'
-    );
-
-    return Array.isArray(datos) ? datos : [];
-  } catch {
-    return [];
-  }
-}
+import localStorage from './hooks/localStorage.js';
 
 export default function App() {
   const [busqueda, setBusqueda] = useState('');
@@ -51,7 +41,7 @@ export default function App() {
   const [cargando, setCargando] = useState(false);
   const [incluirRecuento, setIncluirRecuento] = useState(false);
 
-  const [favoritos, setFavoritos] = useState(leerFavoritos);
+  const [favoritos, setFavoritos] = localStorage('cocktailWiki:favoritos',[]);
   const [verFavoritos, setVerFavoritos] = useState(false);
 
   const peticionActual = useRef(0);
@@ -77,18 +67,6 @@ export default function App() {
 
     return () => controlador.abort();
   }, [reintento]);
-
-  // Guardar los favoritos cuando cambien.
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        'cocktailWiki:favoritos',
-        JSON.stringify(favoritos)
-      );
-    } catch {
-      console.warn('No se han podido guardar los favoritos');
-    }
-  }, [favoritos]);
 
   function alternarFavorito(cocktail) {
     setFavoritos((actuales) => {
