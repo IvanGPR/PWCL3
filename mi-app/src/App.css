@@ -198,3 +198,39 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+#filtroIngredientes {
+  margin-bottom: 20px;
+}
+
+#filtroIngredientes label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#filtroIngredientes form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#filtroIngredientes input {
+  flex: 1;
+  min-width: 180px;
+  max-width: 400px;
+}
+
+@media (max-width: 600px) {
+  #filtroIngredientes form {
+    flex-direction: column;
+  }
+
+  #filtroIngredientes input,
+  #filtroIngredientes button {
+    width: 100%;
+    max-width: none;
+  }
+}
+
