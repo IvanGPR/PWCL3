@@ -4,6 +4,10 @@ import { obtenerCache, guardarCache } from './cache.js';
 const URL_BASE = 'https://www.thecocktaildb.com/api/json/v1/1/';
 
 async function consultarAPI(url, usarCache = true, signal) {
+  if (signal?.aborted) {
+    throw new DOMException('Petición cancelada', 'AbortError');
+  }
+
   if (usarCache) {
     const datosGuardados = obtenerCache(url);
 
@@ -42,15 +46,14 @@ async function consultarAPI(url, usarCache = true, signal) {
     throw errorDatos;
   }
 
-  if (
-    !datos ||
-    typeof datos !== 'object' ||
-    !('drinks' in datos) ||
-    (datos.drinks !== null && !Array.isArray(datos.drinks))
-  ) {
+  if (!datos || typeof datos !== 'object' || !('drinks' in datos) || (datos.drinks !== null && !Array.isArray(datos.drinks))) {
     const errorDatos = new Error('El formato de los datos no es valido');
     errorDatos.tipo = 'datos';
     throw errorDatos;
+  }
+
+  if (signal?.aborted) {
+    throw new DOMException('Petición cancelada', 'AbortError');
   }
 
   if (usarCache) {
@@ -60,9 +63,9 @@ async function consultarAPI(url, usarCache = true, signal) {
   return datos;
 }
 
-export function obtenerCocktails(nombre) {
+export function obtenerCocktails(nombre, signal) {
   const url = `${URL_BASE}search.php?s=${encodeURIComponent(nombre)}`;
-  return consultarAPI(url);
+  return consultarAPI(url, true, signal);
 }
 
 export function obtenerCategorias(signal) {
@@ -70,17 +73,22 @@ export function obtenerCategorias(signal) {
   return consultarAPI(url, true, signal);
 }
 
-export function obtenerCocktailsCategoria(categoria) {
+export function obtenerCocktailsCategoria(categoria, signal) {
   const url = `${URL_BASE}filter.php?c=${encodeURIComponent(categoria)}`;
-  return consultarAPI(url);
+  return consultarAPI(url, true, signal);
 }
 
-export function obtenerDetalleCocktail(id) {
+export function obtenerCocktailsIngrediente(ingrediente, signal) {
+  const url = `${URL_BASE}filter.php?i=${encodeURIComponent(ingrediente)}`;
+  return consultarAPI(url, true, signal);
+}
+
+export function obtenerDetalleCocktail(id, signal) {
   const url = `${URL_BASE}lookup.php?i=${encodeURIComponent(id)}`;
-  return consultarAPI(url);
+  return consultarAPI(url, true, signal);
 }
 
-export function obtenerCocktailAleatorio() {
+export function obtenerCocktailAleatorio(signal) {
   const url = `${URL_BASE}random.php`;
-  return consultarAPI(url, false);
+  return consultarAPI(url, false, signal);
 }
