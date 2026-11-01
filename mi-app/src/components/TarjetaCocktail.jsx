@@ -38,7 +38,7 @@ export default function TarjetaCocktail({
         className="boton-favorito"
         onClick={() => onFavorito(cocktail)}
       >
-        {esFavorito ? ' Quitar favorito' : ' Añadir favorito'}
+        {esFavorito ? 'Quitar favorito' : 'Añadir favorito'}
       </button>
     </article>
   );

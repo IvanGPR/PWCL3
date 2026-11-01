@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function LocalStorage(clave, valorInicial) {
+export default function useLocalStorage(clave, valorInicial) {
 
   const [valor, setValor] = useState(() => {
     try {

@@ -71,3 +71,93 @@ export function obtenerMensajeError(error) {
 
   return 'Ha ocurrido un error inesperado.';
 }
+
+export function normalizarFavoritos(favoritos) {
+  if (!Array.isArray(favoritos)) {
+    return [];
+  }
+
+  const ids = favoritos
+    .map((favorito) => {
+      if (favorito && typeof favorito === 'object') {
+        return favorito.idDrink;
+      }
+
+      return favorito;
+    })
+    .filter((id) => id !== null && id !== undefined && id !== '')
+    .map((id) => String(id));
+
+  return [...new Set(ids)];
+}
+
+export function obtenerMensajeVista(vista) {
+  if (vista.tipo === 'inicio') {
+    return 'Busca un cóctel o utiliza los filtros';
+  }
+
+  if (vista.tipo === 'cargando') {
+    return 'Cargando cócteles...';
+  }
+
+  if (vista.tipo === 'error' || vista.tipo === 'aviso') {
+    return vista.error || '';
+  }
+
+  if (vista.tipo === 'detalle') {
+    return 'Detalle del cóctel';
+  }
+
+  if (vista.tipo === 'favoritos') {
+    return vista.cocktails.length === 0
+      ? 'No tienes favoritos todavía'
+      : `Mis favoritos: ${vista.cocktails.length}`;
+  }
+
+  if (vista.tipo === 'lista') {
+    if (vista.origen === 'aleatorio') {
+      return vista.cocktails.length > 0
+        ? '¡Aquí tienes un cóctel sorpresa!'
+        : 'No se ha encontrado ningún cóctel';
+    }
+
+    if (vista.origen === 'busqueda') {
+      return obtenerMensajeResultados(
+        vista.cocktails.length,
+        vista.criterio
+      );
+    }
+
+    if (vista.origen === 'filtros') {
+      const { categoria, ingrediente } = vista.filtros;
+
+      if (categoria && ingrediente) {
+        return `Cócteles de ${categoria} con ${ingrediente}: ${vista.cocktails.length}`;
+      }
+
+      if (categoria) {
+        return obtenerMensajeCategoria(
+          categoria,
+          vista.cocktails.length
+        );
+      }
+
+      return `Cócteles con ${ingrediente}: ${vista.cocktails.length}`;
+    }
+  }
+  return '';
+}
+
+export function contieneIngrediente(cocktail, ingrediente) {
+  const buscado = ingrediente.trim().toLowerCase();
+
+  for (let i = 1; i <= 15; i++) {
+    const actual = cocktail[`strIngredient${i}`];
+
+    if (actual && actual.toLowerCase()===buscado) {
+      return true;
+    }
+  }
+
+  return false;
+}

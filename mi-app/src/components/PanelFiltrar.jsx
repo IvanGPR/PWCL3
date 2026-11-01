@@ -2,11 +2,13 @@
 import FiltroCategorias from './FiltroCategorias.jsx';
 import FiltroIngredientes from './FiltroIngredientes.jsx';
 
-export default function PanelFiltros({
+export default function PanelFiltrar({
   categorias,
   categoria,
   onCambiarCategoria,
-  cargaCategorias,
+  estadoCategorias,
+  errorCategorias,
+  onReintentarCategorias,
   ingrediente,
   onCambiarIngrediente,
   onAplicarFiltros,
@@ -17,7 +19,7 @@ export default function PanelFiltros({
       <h2>Filtrar cócteles</h2>
 
       <p className="descripcion-filtros">
-        Puedes filtrar por categoría, por ingrediente o combinar ambos
+        Puedes filtrar por categoría, por ingrediente o combinar ambos.
       </p>
 
       <div className="campos-filtros">
@@ -25,7 +27,9 @@ export default function PanelFiltros({
           categorias={categorias}
           seleccion={categoria}
           onCambiar={onCambiarCategoria}
-          carga={cargaCategorias}
+          estado={estadoCategorias}
+          error={errorCategorias}
+          onReintentar={onReintentarCategorias}
           cargando={cargando}
         />
 

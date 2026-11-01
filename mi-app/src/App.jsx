@@ -2,17 +2,15 @@
 import { useState } from 'react';
 import './App.css';
 
-import useCocktails from './hooks/cocktails.js';
-import useCategorias from './hooks/categorias.js';
-import useLocalStorage from './hooks/localStorage.js';
+import useCocktails from './hooks/useCocktails.js';
+import useCategorias from './hooks/useCategorias.js';
+import useLocalStorage from './hooks/useLocalStorage.js';
 
-import { contarCocktailsPorCategoria } from './logic.js';
+import { normalizarFavoritos } from './logic.js';
 
 import Buscador from './components/Buscador.jsx';
 import PanelFiltrar from './components/PanelFiltrar.jsx';
-import ListaCocktails from './components/ListaCocktails.jsx';
-import DetalleCocktail from './components/DetalleCocktail.jsx';
-import ResumenCategorias from './components/ResumenCategorias.jsx';
+import FormaResultados from './components/FormaResultados.jsx';
 
 export default function App() {
   const [busqueda, setBusqueda] = useState('');
@@ -21,14 +19,14 @@ export default function App() {
 
   const [favoritos, setFavoritos] = useLocalStorage(
     'cocktailWiki:favoritos',
-    []
+    [],
+    normalizarFavoritos
   );
 
   const cargaCategorias = useCategorias();
 
   const {
     vista,
-    cargando,
     buscar,
     filtrar,
     aleatorio,
@@ -37,39 +35,19 @@ export default function App() {
     volver
   } = useCocktails();
 
-  // Acepta tanto favoritos antiguos (objetos)
-  // como favoritos nuevos (identificadores).
-  const idsFavoritos = Array.isArray(favoritos)
-    ? favoritos.map((favorito) =>
-        String(
-          typeof favorito === 'object'
-            ? favorito.idDrink
-            : favorito
-        )
-      )
-    : [];
-
-  const favoritosSet = new Set(idsFavoritos);
+  // Estado derivado: no necesita otro useState.
+  const cargando = vista.tipo === 'cargando';
+  const favoritosSet = new Set(favoritos);
 
   function alternarFavorito(cocktail) {
     const id = String(cocktail.idDrink);
 
     setFavoritos((anteriores) => {
-      const ids = Array.isArray(anteriores)
-        ? anteriores.map((favorito) =>
-            String(
-              typeof favorito === 'object'
-                ? favorito.idDrink
-                : favorito
-            )
-          )
-        : [];
-
-      if (ids.includes(id)) {
-        return ids.filter((actual) => actual !== id);
+      if (anteriores.includes(id)) {
+        return anteriores.filter((actual) => actual !== id);
       }
 
-      return [...ids, id];
+      return [...anteriores, id];
     });
   }
 
@@ -89,10 +67,6 @@ export default function App() {
     filtrar(categoria, ingrediente);
   }
 
-  const recuento = vista.incluirRecuento
-    ? contarCocktailsPorCategoria(vista.cocktails)
-    : {};
-
   return (
     <main id="app">
       <h1 id="cocktails">COCKTAIL WIKI</h1>
@@ -105,61 +79,34 @@ export default function App() {
         cargando={cargando}
       />
 
-
       <PanelFiltrar
-          categorias={cargaCategorias.categorias}
-          categoria={categoria}
-          onCambiarCategoria={setCategoria}
-          cargaCategorias={cargaCategorias}
-          ingrediente={ingrediente}
-          onCambiarIngrediente={setIngrediente}
-          onAplicarFiltros={aplicarFiltros}
-          cargando={cargando}
-        />
-
+        categorias={cargaCategorias.categorias}
+        categoria={categoria}
+        onCambiarCategoria={setCategoria}
+        estadoCategorias={cargaCategorias.estado.tipo}
+        errorCategorias={cargaCategorias.estado.error}
+        onReintentarCategorias={cargaCategorias.reintentar}
+        ingrediente={ingrediente}
+        onCambiarIngrediente={setIngrediente}
+        onAplicarFiltros={aplicarFiltros}
+        cargando={cargando}
+      />
 
       <button
         type="button"
         className="boton-favoritos"
-        onClick={() => mostrarFavoritos(idsFavoritos)}
+        onClick={() => mostrarFavoritos(favoritos)}
       >
-        Mis favoritos ({idsFavoritos.length})
+        Mis favoritos ({favoritos.length})
       </button>
 
-      <div
-        id="tituloCocktail"
-        role="status"
-        className={cargando ? 'indicador-carga' : ''}
-      >
-        {vista.mensaje}
-      </div>
-
-      <div id="resultados">
-        {vista.tipo === 'detalle' && vista.detalle ? (
-          <DetalleCocktail
-            key={vista.detalle.idDrink}
-            cocktail={vista.detalle}
-            onVolver={volver}
-          />
-        ) : (
-          <>
-            {(vista.tipo === 'lista' ||
-              vista.tipo === 'favoritos') && (
-              <ListaCocktails
-                cocktails={vista.cocktails}
-                onDetalle={verDetalle}
-                favoritosIds={favoritosSet}
-                onFavorito={alternarFavorito}
-              />
-            )}
-
-            {vista.tipo === 'lista' &&
-              Object.keys(recuento).length > 0 && (
-                <ResumenCategorias recuento={recuento} />
-              )}
-          </>
-        )}
-      </div>
+      <FormaResultados
+        vista={vista}
+        favoritosIds={favoritosSet}
+        onDetalle={verDetalle}
+        onFavorito={alternarFavorito}
+        onVolver={volver}
+      />
     </main>
   );
 }
