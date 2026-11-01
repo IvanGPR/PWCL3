@@ -22,8 +22,8 @@ export default function TarjetaCocktail({
         />
       )}
 
-      <p>
-        Categoría: {cocktail.strCategory || 'No especificada'}
+      <p className="categoria-cocktail">
+        {cocktail.strCategory || 'Categoría no disponible'}
       </p>
 
       <button
@@ -38,7 +38,7 @@ export default function TarjetaCocktail({
         className="boton-favorito"
         onClick={() => onFavorito(cocktail)}
       >
-        {esFavorito ? '★ Quitar favorito' : '☆ Añadir favorito'}
+        {esFavorito ? ' Quitar favorito' : ' Añadir favorito'}
       </button>
     </article>
   );

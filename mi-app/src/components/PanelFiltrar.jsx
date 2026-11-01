@@ -17,7 +17,7 @@ export default function PanelFiltros({
       <h2>Filtrar cócteles</h2>
 
       <p className="descripcion-filtros">
-        Puedes filtrar por categoría, por ingrediente o combinar ambos.
+        Puedes filtrar por categoría, por ingrediente o combinar ambos
       </p>
 
       <div className="campos-filtros">
@@ -35,11 +35,6 @@ export default function PanelFiltros({
           cargando={cargando}
         />
       </div>
-
-      <p className="aviso-filtros">
-        Selecciona uno o ambos filtros y pulsa el botón para
-        mostrar los resultados.
-      </p>
 
       <button
         type="button"

@@ -18,6 +18,7 @@ export default function ListaCocktails({
           key={cocktail.idDrink}
           cocktail={cocktail}
           onDetalle={onDetalle}
+          favoritosIds={favoritosIds}
           onFavorito={onFavorito}
           esFavorito={favoritosIds.has(String(cocktail.idDrink))}
         />

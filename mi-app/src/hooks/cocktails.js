@@ -116,67 +116,100 @@ export default function useCocktails() {
     );
   }
 
-  function filtrar(categoria, ingrediente) {
+
+    function filtrar(categoria, ingrediente) {
     const textoIngrediente = ingrediente.trim();
 
     if (!categoria && !textoIngrediente) {
-      cancelarPeticion();
+        cancelarPeticion();
 
-      setVista({
+        setVista({
         ...VISTA_INICIAL,
         tipo: 'aviso',
         mensaje: 'Selecciona una categoría o escribe un ingrediente'
-      });
+        });
 
-      return;
+        return;
     }
 
     ejecutarPeticion(
-      async (signal) => {
-        const respuestas = await Promise.all([
-          categoria
-            ? obtenerCocktailsCategoria(categoria, signal)
-            : Promise.resolve(null),
+        async (signal) => {
+        // Obtener todos los cócteles que coincidan con los filtros.
+        const [respuestaCategoria, respuestaIngrediente] =
+            await Promise.all([
+            categoria
+                ? obtenerCocktailsCategoria(categoria, signal)
+                : Promise.resolve(null),
 
-          textoIngrediente
-            ? obtenerCocktailsIngrediente(textoIngrediente, signal)
-            : Promise.resolve(null)
-        ]);
+            textoIngrediente
+                ? obtenerCocktailsIngrediente(textoIngrediente, signal)
+                : Promise.resolve(null)
+            ]);
 
-        const porCategoria = respuestas[0]?.drinks || [];
-        const porIngrediente = respuestas[1]?.drinks || [];
+        const cocktailsCategoria = respuestaCategoria?.drinks || [];
+        const cocktailsIngrediente = respuestaIngrediente?.drinks || [];
+
+        let resultados;
 
         if (categoria && textoIngrediente) {
-          const ids = new Set(
-            porIngrediente.map((cocktail) => cocktail.idDrink)
-          );
+            // Intersección: deben cumplir los dos filtros.
+            const idsCategoria = new Set(
+            cocktailsCategoria.map((cocktail) => cocktail.idDrink)
+            );
 
-          return porCategoria.filter((cocktail) =>
-            ids.has(cocktail.idDrink)
-          );
+            resultados = cocktailsIngrediente.filter((cocktail) =>
+            idsCategoria.has(cocktail.idDrink)
+            );
+        } else if (categoria) {
+            resultados = cocktailsCategoria;
+        } else {
+            resultados = cocktailsIngrediente;
         }
 
-        return categoria ? porCategoria : porIngrediente;
-      },
-      'Aplicando filtros...',
-      (datos) => {
+        // Consultar la ficha completa de cada resultado.
+        const detalles = await Promise.all(
+            resultados.map((cocktail) =>
+            obtenerDetalleCocktail(cocktail.idDrink, signal)
+            )
+        );
+
+
+        return detalles
+            .map((respuesta) => respuesta.drinks?.[0])
+            .filter(Boolean);
+        },
+        'Aplicando filtros...',
+        (datos) => {
         const cocktails = ordenarCocktails(datos);
 
-        const mensaje = categoria && !textoIngrediente
-          ? obtenerMensajeCategoria(categoria, cocktails.length)
-          : `Cócteles encontrados con los filtros: ${cocktails.length}`;
+        let mensaje;
+
+        if (categoria && textoIngrediente) {
+            mensaje =
+            `Cócteles de ${categoria} con ${textoIngrediente}: ` +
+            cocktails.length;
+        } else if (categoria) {
+            mensaje = obtenerMensajeCategoria(
+            categoria,
+            cocktails.length
+            );
+        } else {
+            mensaje =
+            `Cócteles con ${textoIngrediente}: ${cocktails.length}`;
+        }
 
         return {
-          tipo: 'lista',
-          cocktails,
-          detalle: null,
-          origen: 'lista',
-          mensaje,
-          incluirRecuento: false
+            tipo: 'lista',
+            cocktails,
+            detalle: null,
+            origen: 'lista',
+            mensaje,
+            incluirRecuento: false
         };
-      }
+        }
     );
-  }
+    }
+
 
   function aleatorio() {
     ejecutarPeticion(
