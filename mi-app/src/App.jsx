@@ -71,8 +71,8 @@ export default function App() {
 
   return (
     <main id="app">
-      {/* ANTES: <h1 id="cocktails">COCKTAIL WIKI</h1> */}
-      {/* CAMBIO: mantenemos el id para no cambiar el CSS. */}
+      {/* <h1 id="cocktails">COCKTAIL WIKI</h1> */}
+      {/* mantenemos el id para no cambiar el CSS */}
       <h1 id="cocktails">MEAL WIKI</h1>
 
       <Buscador

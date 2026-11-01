@@ -10,7 +10,7 @@ export default function FiltroIngredientes({
         Ingrediente:
       </label>
 
-      {/* ANTES: placeholder="Ej.: Vodka, Rum, Lime" */}
+      {/* placeholder="Ej.: Vodka, Rum, Lime" */}
       <input
         type="text"
         id="ingrediente"

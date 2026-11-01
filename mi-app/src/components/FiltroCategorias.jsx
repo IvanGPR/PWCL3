@@ -20,7 +20,7 @@ export default function FiltroCategorias({
         onChange={(evento) => onCambiar(evento.target.value)}
         disabled={cargando || estado !== 'listo'}
       >
-        <option value="">Selecciona una categoría</option>
+        <option value="">Selecciona una categoria</option>
 
         {categorias.map((nombre) => (
           <option key={nombre} value={nombre}>
@@ -40,7 +40,7 @@ export default function FiltroCategorias({
           id="reintentarCategorias"
           onClick={onReintentar}
         >
-          Reintentar carga de categorías
+          Reintentar carga de categorias
         </button>
       )}
     </section>

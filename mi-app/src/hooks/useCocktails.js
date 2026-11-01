@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   obtenerCocktails,
-  // ANTES: obtenerCategorias,
+  // obtenerCategorias,
   obtenerCocktailsCategoria,
-  // NUEVO: utilizamos el filtro directo por ingrediente.
+  // utilizamos el filtro directo por ingrediente.
   obtenerCocktailsIngrediente,
   obtenerDetalleCocktail,
   obtenerCocktailAleatorio
@@ -14,7 +14,7 @@ import {
 import {
   ordenarCocktails,
   obtenerMensajeError,
-  // ANTES: contieneIngrediente
+  // contieneIngrediente
 } from '../logic.js';
 
 const VISTA_INICIAL = {
@@ -32,7 +32,6 @@ export default function useCocktails() {
   const [vista, setVista] = useState(VISTA_INICIAL);
   const controladorActual = useRef(null);
 
-  // Cancela las peticiones pendientes cuando se desmonta el hook.
   useEffect(() => {
     return () => controladorActual.current?.abort();
   }, []);
@@ -82,7 +81,7 @@ export default function useCocktails() {
       setVista({
         ...VISTA_INICIAL,
         tipo: 'aviso',
-        // ANTES: error: 'Escribe el nombre de un cóctel para buscar'
+        // error: 'Escribe el nombre de un coctel para buscar'
         error: 'Escribe el nombre de una comida para buscar'
       });
       return;
@@ -109,7 +108,7 @@ export default function useCocktails() {
       setVista({
         ...VISTA_INICIAL,
         tipo: 'aviso',
-        error: 'Selecciona una categoría o escribe un ingrediente'
+        error: 'Selecciona una categoria o escribe un ingrediente'
       });
 
       return;
@@ -120,8 +119,6 @@ export default function useCocktails() {
         let resultados;
 
         /*
-        ANTES:
-
         if (categoria) {
           const respuesta = await obtenerCocktailsCategoria(
             categoria,
@@ -147,7 +144,6 @@ export default function useCocktails() {
         }
         */
 
-        // NUEVO: filtramos por categoría e ingrediente juntos.
         if (categoria && texto) {
           const [respuestaCategoria, respuestaIngrediente] =
             await Promise.all([
@@ -158,20 +154,15 @@ export default function useCocktails() {
           const comidasCategoria = respuestaCategoria.drinks || [];
           const comidasIngrediente = respuestaIngrediente.drinks || [];
 
-          // Guardamos los identificadores de las comidas
-          // que contienen el ingrediente solicitado.
           const idsIngrediente = new Set(
             comidasIngrediente.map((comida) => comida.idDrink)
           );
 
-          // Nos quedamos con las comidas que aparecen
-          // en ambas consultas.
           resultados = comidasCategoria.filter((comida) =>
             idsIngrediente.has(comida.idDrink)
           );
 
         } else if (categoria) {
-          // NUEVO: filtramos únicamente por categoría.
           const respuesta = await obtenerCocktailsCategoria(
             categoria,
             signal
@@ -180,7 +171,6 @@ export default function useCocktails() {
           resultados = respuesta.drinks || [];
 
         } else {
-          // NUEVO: filtramos únicamente por ingrediente.
           const respuesta = await obtenerCocktailsIngrediente(
             texto,
             signal
@@ -189,7 +179,6 @@ export default function useCocktails() {
           resultados = respuesta.drinks || [];
         }
 
-        // Conservamos la eliminación de duplicados.
         const ids = new Set();
 
         const cocktailsUnicos = resultados.filter((cocktail) => {
@@ -202,10 +191,6 @@ export default function useCocktails() {
         });
 
         /*
-        ANTES:
-
-        console.log('Cócteles candidatos:', cocktailsUnicos.length);
-
         const detalles = await Promise.all(
           cocktailsUnicos.map((cocktail) =>
             obtenerDetalleCocktail(cocktail.idDrink, signal)
@@ -225,8 +210,6 @@ export default function useCocktails() {
         return cocktailsCompletos;
         */
 
-        // NUEVO: no descargamos todas las recetas completas.
-        // La API ya ha realizado el filtrado.
         return cocktailsUnicos;
       },
 
@@ -258,7 +241,6 @@ export default function useCocktails() {
   }
 
   function verDetalle(id) {
-    // Guardamos la vista anterior para poder regresar.
     const vistaAnterior = vista.tipo === 'cargando'
       ? VISTA_INICIAL
       : vista;

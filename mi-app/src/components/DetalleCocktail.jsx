@@ -24,9 +24,7 @@ export default function DetalleCocktail({ cocktail, onVolver }) {
 
       return {
         numero: ingrediente.numero,
-        texto: cantidad
-          ? `${ingrediente.nombre.trim()}: ${cantidad}`
-          : ingrediente.nombre.trim()
+        texto: cantidad ? `${ingrediente.nombre.trim()}: ${cantidad}` : ingrediente.nombre.trim()
       };
     });
 
@@ -47,8 +45,8 @@ export default function DetalleCocktail({ cocktail, onVolver }) {
         Categoría: {cocktail.strCategory || 'No especificada'}
       </p>
 
-      {/* ANTES: <p>Vaso: {cocktail.strGlass || 'No especificado'}</p> */}
-      {/* CAMBIO: las comidas tienen país o región de origen. */}
+      {/* <p>Vaso: {cocktail.strGlass || 'No especificado'}</p> */}
+      {/* Las comidas tienen pais o region de origen. */}
       <p>
         Origen: {cocktail.strArea || 'No especificado'}
       </p>
@@ -70,8 +68,7 @@ export default function DetalleCocktail({ cocktail, onVolver }) {
       <h3>Preparación</h3>
 
       <p>
-        {cocktail.strInstructions ||
-          'No hay instrucciones disponibles'}
+        {cocktail.strInstructions || 'No hay instrucciones disponibles'}
       </p>
 
       <button type="button" onClick={onVolver}>

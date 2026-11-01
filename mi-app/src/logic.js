@@ -28,7 +28,7 @@ export function ordenarCocktails(cocktails) {
 
 export function contarCocktailsPorCategoria(cocktails) {
   return cocktails.reduce((recuento, cocktail) => {
-    const categoria = cocktail.strCategory || 'Sin categoría';
+    const categoria = cocktail.strCategory || 'Sin categoria';
 
     recuento[categoria] = (recuento[categoria] || 0) + 1;
 
@@ -38,40 +38,40 @@ export function contarCocktailsPorCategoria(cocktails) {
 
 export function obtenerMensajeResultados(cantidad, nombre) {
   if (cantidad === 0) {
-    // ANTES: return `No se han encontrado cócteles para "${nombre}"`;
+    // return `No se han encontrado cocteles para "${nombre}"`;
     return `No se han encontrado platos para "${nombre}"`;
   }
 
   if (cantidad === 1) {
-    // ANTES: return 'Se ha encontrado 1 cóctel';
+    // return 'Se ha encontrado 1 coctel';
     return 'Se ha encontrado 1 plato';
   }
 
-  // ANTES: return `Se han encontrado ${cantidad} cócteles`;
+  // return `Se han encontrado ${cantidad} cocteles`;
   return `Se han encontrado ${cantidad} platos`;
 }
 
 export function obtenerMensajeCategoria(categoria, cantidad) {
   if (cantidad === 0) {
-    // ANTES: return `No se han encontrado cócteles en la categoría ${categoria}`;
-    return `No se han encontrado platos en la categoría ${categoria}`;
+    // return `No se han encontrado cocteles en la categoria ${categoria}`;
+    return `No se han encontrado platos en la categoria ${categoria}`;
   }
 
-  // ANTES: return `Cócteles de la categoría ${categoria}: ${cantidad}`;
-  return `Platos de la categoría ${categoria}: ${cantidad}`;
+  // return `Cocteles de la categoria ${categoria}: ${cantidad}`;
+  return `Platos de la categoria ${categoria}: ${cantidad}`;
 }
 
 export function obtenerMensajeError(error) {
   if (error.tipo === 'red') {
-    return 'Error de conexión. Comprueba tu conexión a Internet.';
+    return 'Error de conexion. Comprueba tu conexion a Internet.';
   }
 
   if (error.tipo === 'http') {
-    return 'Error del servidor. Inténtalo de nuevo.';
+    return 'Error del servidor. Intentalo de nuevo.';
   }
 
   if (error.tipo === 'datos') {
-    return 'Los datos recibidos no son válidos.';
+    return 'Los datos recibidos no son validos.';
   }
 
   return 'Ha ocurrido un error inesperado.';
@@ -98,12 +98,12 @@ export function normalizarFavoritos(favoritos) {
 
 export function obtenerMensajeVista(vista) {
   if (vista.tipo === 'inicio') {
-    // ANTES: return 'Busca un cóctel o utiliza los filtros';
+    // return 'Busca un coctel o utiliza los filtros';
     return 'Busca una comida o utiliza los filtros';
   }
 
   if (vista.tipo === 'cargando') {
-    // ANTES: return 'Cargando cócteles...';
+    // return 'Cargando cocteles...';
     return 'Cargando comidas...';
   }
 
@@ -112,22 +112,22 @@ export function obtenerMensajeVista(vista) {
   }
 
   if (vista.tipo === 'detalle') {
-    // ANTES: return 'Detalle del cóctel';
+    // return 'Detalle del cóctel';
     return 'Detalle de la receta';
   }
 
   if (vista.tipo === 'favoritos') {
     return vista.cocktails.length === 0
-      ? 'No tienes favoritos todavía'
+      ? 'No tienes favoritos todavia'
       : `Mis favoritos: ${vista.cocktails.length}`;
   }
 
   if (vista.tipo === 'lista') {
     if (vista.origen === 'aleatorio') {
       return vista.cocktails.length > 0
-        // ANTES: '¡Aquí tienes un cóctel sorpresa!'
-        ? '¡Aquí tienes una receta sorpresa!'
-        // ANTES: 'No se ha encontrado ningún cóctel'
+        // '¡Aqui tienes un cóctel sorpresa!'
+        ? '¡Aqui tienes una receta sorpresa!'
+        // 'No se ha encontrado ningún cóctel'
         : 'No se ha encontrado ninguna receta';
     }
 
@@ -142,7 +142,7 @@ export function obtenerMensajeVista(vista) {
       const { categoria, ingrediente } = vista.filtros;
 
       if (categoria && ingrediente) {
-        // ANTES: return `Cócteles de ${categoria} con ${ingrediente}: ${vista.cocktails.length}`;
+        // return `Cocteles de ${categoria} con ${ingrediente}: ${vista.cocktails.length}`;
         return `Platos de ${categoria} con ${ingrediente}: ${vista.cocktails.length}`;
       }
 
@@ -153,7 +153,7 @@ export function obtenerMensajeVista(vista) {
         );
       }
 
-      // ANTES: return `Cócteles con ${ingrediente}: ${vista.cocktails.length}`;
+      // return `Cocteles con ${ingrediente}: ${vista.cocktails.length}`;
       return `Platos con ${ingrediente}: ${vista.cocktails.length}`;
     }
   }

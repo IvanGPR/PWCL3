@@ -22,9 +22,7 @@ export default function VistaResultados({
     vista.tipo === 'lista' || vista.tipo === 'favoritos';
 
   const recuento =
-    vista.tipo === 'lista' && vista.modo === 'busqueda'
-      ? contarCocktailsPorCategoria(vista.cocktails)
-      : {};
+    vista.tipo === 'lista' && vista.modo === 'busqueda' ? contarCocktailsPorCategoria(vista.cocktails) : {};
 
   return (
     <>

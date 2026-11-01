@@ -2,10 +2,7 @@
 import { useEffect, useState } from 'react';
 import { obtenerCategorias } from '../api.js';
 
-import {
-  obtenerCategoriasValidas,
-  obtenerMensajeError
-} from '../logic.js';
+import { obtenerCategoriasValidas, obtenerMensajeError } from '../logic.js';
 
 export default function useCategorias() {
   const [categorias, setCategorias] = useState([]);

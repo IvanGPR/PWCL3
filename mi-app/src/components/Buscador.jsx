@@ -14,7 +14,7 @@ export default function Buscador({
   return (
     <section id="buscador">
       <label htmlFor="selecCocktail">
-        {/* ANTES: ¿Qué cóctel quieres buscar? */}
+        {/* ¿Qué cóctel quieres buscar? */}
         ¿Qué comida quieres buscar?
       </label>
 
@@ -23,9 +23,7 @@ export default function Buscador({
           type="text"
           id="selecCocktail"
           value={busqueda}
-          onChange={(evento) =>
-            onCambiarBusqueda(evento.target.value)
-          }
+          onChange={(evento) => onCambiarBusqueda(evento.target.value)}
         />
 
         <button type="submit" disabled={cargando}>
@@ -37,7 +35,7 @@ export default function Buscador({
           onClick={onAleatorio}
           disabled={cargando}
         >
-          SORPRÉNDEME
+          SORPRENDEME
         </button>
       </form>
     </section>

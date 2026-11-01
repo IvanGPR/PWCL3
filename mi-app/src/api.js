@@ -1,11 +1,11 @@
 
 import { obtenerCache, guardarCache } from './cache.js';
 
-// ANTES: const URL_BASE = 'https://www.thecocktaildb.com/api/json/v1/1/';
-// CAMBIO: utilizamos TheMealDB.
+// const URL_BASE = 'https://www.thecocktaildb.com/api/json/v1/1/';
+// utilizamos TheMealDB.
 const URL_BASE = 'https://www.themealdb.com/api/json/v1/1/';
 
-// NUEVO: adaptamos los datos de TheMealDB al formato anterior.
+// adaptamos los datos de TheMealDB al formato para cocteles
 function normalizarRespuesta(datos) {
   return {
     drinks: datos.meals?.map((meal) => ({
@@ -61,12 +61,11 @@ async function consultarAPI(url, usarCache = true, signal) {
     throw errorDatos;
   }
 
-  // ANTES:
   // if (!datos || typeof datos !== 'object' ||
   // !('drinks' in datos) ||
   // (datos.drinks !== null && !Array.isArray(datos.drinks))) {
 
-  // CAMBIO: TheMealDB devuelve 'meals' en lugar de 'drinks'.
+  // TheMealDB devuelve 'meals' en lugar de 'drinks'
   if (
     !datos ||
     typeof datos !== 'object' ||
@@ -82,15 +81,15 @@ async function consultarAPI(url, usarCache = true, signal) {
     throw new DOMException('Petición cancelada', 'AbortError');
   }
 
-  // NUEVO: normalizamos antes de guardar en caché.
+  // normalizamos antes de guardar en cache
   const datosNormalizados = normalizarRespuesta(datos);
 
   if (usarCache) {
-    // ANTES: guardarCache(url, datos);
+    // guardarCache(url, datos);
     guardarCache(url, datosNormalizados);
   }
 
-  // ANTES: return datos;
+  // return datos;
   return datosNormalizados;
 }
 

@@ -16,7 +16,7 @@ export default function PanelFiltrar({
 }) {
   return (
     <section className="panel-filtros">
-      {/* ANTES: <h2>Filtrar cócteles</h2> */}
+      {/* <h2>Filtrar cocteles</h2> */}
       <h2>Filtrar comidas</h2>
 
       <p className="descripcion-filtros">
