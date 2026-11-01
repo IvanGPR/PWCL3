@@ -234,3 +234,82 @@
   }
 }
 
+
+/* Panel principal de filtros */
+
+.panel-filtros {
+  margin: 25px 0;
+  padding: 24px;
+  background-color: #fff3e6;
+  border: 2px solid #ed7d31;
+  border-radius: 12px;
+}
+
+.panel-filtros h2 {
+  margin: 0 0 10px;
+  color: #bd581b;
+  font-size: 1.4rem;
+}
+
+.descripcion-filtros {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.campos-filtros {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.panel-filtros #filtroCategorias {
+  margin-bottom: 0;
+}
+
+.campo-ingrediente label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.campo-ingrediente input,
+.panel-filtros #selectorCategorias {
+  width: 100%;
+  max-width: none;
+}
+
+.aviso-filtros {
+  margin: 20px 0 15px;
+  padding: 12px;
+  background-color: #ffe0bf;
+  border-left: 4px solid #ed7d31;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.boton-aplicar-filtros {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #ed7d31;
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.boton-aplicar-filtros:hover:not(:disabled) {
+  background-color: #c95e18;
+}
+
+@media (max-width: 600px) {
+  .panel-filtros {
+    padding: 16px;
+  }
+
+  .campos-filtros {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+

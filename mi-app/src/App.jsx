@@ -9,8 +9,7 @@ import useLocalStorage from './hooks/localStorage.js';
 import { contarCocktailsPorCategoria } from './logic.js';
 
 import Buscador from './components/Buscador.jsx';
-import FiltroCategorias from './components/FiltroCategorias.jsx';
-import FiltroIngredientes from './components/FiltroIngredientes.jsx';
+import PanelFiltrar from './components/PanelFiltrar.jsx';
 import ListaCocktails from './components/ListaCocktails.jsx';
 import DetalleCocktail from './components/DetalleCocktail.jsx';
 import ResumenCategorias from './components/ResumenCategorias.jsx';
@@ -106,27 +105,25 @@ export default function App() {
         cargando={cargando}
       />
 
-      <FiltroCategorias
-        categorias={cargaCategorias.categorias}
-        seleccion={categoria}
-        onCambiar={setCategoria}
-        carga={cargaCategorias}
-        cargando={cargando}
-      />
 
-      <FiltroIngredientes
-        ingrediente={ingrediente}
-        onCambiar={setIngrediente}
-        onFiltrar={aplicarFiltros}
-        cargando={cargando}
-      />
+      <PanelFiltrar
+          categorias={cargaCategorias.categorias}
+          categoria={categoria}
+          onCambiarCategoria={setCategoria}
+          cargaCategorias={cargaCategorias}
+          ingrediente={ingrediente}
+          onCambiarIngrediente={setIngrediente}
+          onAplicarFiltros={aplicarFiltros}
+          cargando={cargando}
+        />
+
 
       <button
         type="button"
         className="boton-favoritos"
         onClick={() => mostrarFavoritos(idsFavoritos)}
       >
-        ★ Mis favoritos ({idsFavoritos.length})
+        Mis favoritos ({idsFavoritos.length})
       </button>
 
       <div
