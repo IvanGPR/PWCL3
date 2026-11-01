@@ -16,7 +16,8 @@ export default function PanelFiltrar({
 }) {
   return (
     <section className="panel-filtros">
-      <h2>Filtrar cócteles</h2>
+      {/* ANTES: <h2>Filtrar cócteles</h2> */}
+      <h2>Filtrar comidas</h2>
 
       <p className="descripcion-filtros">
         Puedes filtrar por categoría, por ingrediente o combinar ambos.

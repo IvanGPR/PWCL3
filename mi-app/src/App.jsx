@@ -18,7 +18,9 @@ export default function App() {
   const [ingrediente, setIngrediente] = useState('');
 
   const [favoritos, setFavoritos] = useLocalStorage(
-    'cocktailWiki:favoritos',
+    // ANTES: 'cocktailWiki:favoritos',
+    // CAMBIO: nueva clave para las comidas.
+    'mealWiki:favoritos',
     [],
     normalizarFavoritos
   );
@@ -69,7 +71,9 @@ export default function App() {
 
   return (
     <main id="app">
-      <h1 id="cocktails">COCKTAIL WIKI</h1>
+      {/* ANTES: <h1 id="cocktails">COCKTAIL WIKI</h1> */}
+      {/* CAMBIO: mantenemos el id para no cambiar el CSS. */}
+      <h1 id="cocktails">MEAL WIKI</h1>
 
       <Buscador
         busqueda={busqueda}

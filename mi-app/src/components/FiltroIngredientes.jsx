@@ -10,12 +10,13 @@ export default function FiltroIngredientes({
         Ingrediente:
       </label>
 
+      {/* ANTES: placeholder="Ej.: Vodka, Rum, Lime" */}
       <input
         type="text"
         id="ingrediente"
         value={ingrediente}
         onChange={(evento) => onCambiar(evento.target.value)}
-        placeholder="Ej.: Vodka, Rum, Lime"
+        placeholder="Ej.: Chicken, Rice, Tomato"
         disabled={cargando}
       />
     </div>

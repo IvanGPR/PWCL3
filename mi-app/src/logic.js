@@ -38,22 +38,27 @@ export function contarCocktailsPorCategoria(cocktails) {
 
 export function obtenerMensajeResultados(cantidad, nombre) {
   if (cantidad === 0) {
-    return `No se han encontrado cócteles para "${nombre}"`;
+    // ANTES: return `No se han encontrado cócteles para "${nombre}"`;
+    return `No se han encontrado platos para "${nombre}"`;
   }
 
   if (cantidad === 1) {
-    return 'Se ha encontrado 1 cóctel';
+    // ANTES: return 'Se ha encontrado 1 cóctel';
+    return 'Se ha encontrado 1 plato';
   }
 
-  return `Se han encontrado ${cantidad} cócteles`;
+  // ANTES: return `Se han encontrado ${cantidad} cócteles`;
+  return `Se han encontrado ${cantidad} platos`;
 }
 
 export function obtenerMensajeCategoria(categoria, cantidad) {
   if (cantidad === 0) {
-    return `No se han encontrado cócteles en la categoría ${categoria}`;
+    // ANTES: return `No se han encontrado cócteles en la categoría ${categoria}`;
+    return `No se han encontrado platos en la categoría ${categoria}`;
   }
 
-  return `Cócteles de la categoría ${categoria}: ${cantidad}`;
+  // ANTES: return `Cócteles de la categoría ${categoria}: ${cantidad}`;
+  return `Platos de la categoría ${categoria}: ${cantidad}`;
 }
 
 export function obtenerMensajeError(error) {
@@ -93,11 +98,13 @@ export function normalizarFavoritos(favoritos) {
 
 export function obtenerMensajeVista(vista) {
   if (vista.tipo === 'inicio') {
-    return 'Busca un cóctel o utiliza los filtros';
+    // ANTES: return 'Busca un cóctel o utiliza los filtros';
+    return 'Busca una comida o utiliza los filtros';
   }
 
   if (vista.tipo === 'cargando') {
-    return 'Cargando cócteles...';
+    // ANTES: return 'Cargando cócteles...';
+    return 'Cargando comidas...';
   }
 
   if (vista.tipo === 'error' || vista.tipo === 'aviso') {
@@ -105,7 +112,8 @@ export function obtenerMensajeVista(vista) {
   }
 
   if (vista.tipo === 'detalle') {
-    return 'Detalle del cóctel';
+    // ANTES: return 'Detalle del cóctel';
+    return 'Detalle de la receta';
   }
 
   if (vista.tipo === 'favoritos') {
@@ -117,8 +125,10 @@ export function obtenerMensajeVista(vista) {
   if (vista.tipo === 'lista') {
     if (vista.origen === 'aleatorio') {
       return vista.cocktails.length > 0
-        ? '¡Aquí tienes un cóctel sorpresa!'
-        : 'No se ha encontrado ningún cóctel';
+        // ANTES: '¡Aquí tienes un cóctel sorpresa!'
+        ? '¡Aquí tienes una receta sorpresa!'
+        // ANTES: 'No se ha encontrado ningún cóctel'
+        : 'No se ha encontrado ninguna receta';
     }
 
     if (vista.origen === 'busqueda') {
@@ -132,7 +142,8 @@ export function obtenerMensajeVista(vista) {
       const { categoria, ingrediente } = vista.filtros;
 
       if (categoria && ingrediente) {
-        return `Cócteles de ${categoria} con ${ingrediente}: ${vista.cocktails.length}`;
+        // ANTES: return `Cócteles de ${categoria} con ${ingrediente}: ${vista.cocktails.length}`;
+        return `Platos de ${categoria} con ${ingrediente}: ${vista.cocktails.length}`;
       }
 
       if (categoria) {
@@ -142,9 +153,11 @@ export function obtenerMensajeVista(vista) {
         );
       }
 
-      return `Cócteles con ${ingrediente}: ${vista.cocktails.length}`;
+      // ANTES: return `Cócteles con ${ingrediente}: ${vista.cocktails.length}`;
+      return `Platos con ${ingrediente}: ${vista.cocktails.length}`;
     }
   }
+
   return '';
 }
 
@@ -154,7 +167,7 @@ export function contieneIngrediente(cocktail, ingrediente) {
   for (let i = 1; i <= 15; i++) {
     const actual = cocktail[`strIngredient${i}`];
 
-    if (actual && actual.toLowerCase()===buscado) {
+    if (actual && actual.toLowerCase() === buscado) {
       return true;
     }
   }

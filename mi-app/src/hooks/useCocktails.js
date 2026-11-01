@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   obtenerCocktails,
-  obtenerCategorias,
+  // ANTES: obtenerCategorias,
   obtenerCocktailsCategoria,
+  // NUEVO: utilizamos el filtro directo por ingrediente.
+  obtenerCocktailsIngrediente,
   obtenerDetalleCocktail,
   obtenerCocktailAleatorio
 } from '../api.js';
@@ -12,7 +14,7 @@ import {
 import {
   ordenarCocktails,
   obtenerMensajeError,
-  contieneIngrediente
+  // ANTES: contieneIngrediente
 } from '../logic.js';
 
 const VISTA_INICIAL = {
@@ -80,7 +82,8 @@ export default function useCocktails() {
       setVista({
         ...VISTA_INICIAL,
         tipo: 'aviso',
-        error: 'Escribe el nombre de un cóctel para buscar'
+        // ANTES: error: 'Escribe el nombre de un cóctel para buscar'
+        error: 'Escribe el nombre de una comida para buscar'
       });
       return;
     }
@@ -96,7 +99,6 @@ export default function useCocktails() {
       })
     );
   }
-
 
   function filtrar(categoria, ingrediente) {
     const texto = ingrediente.trim();
@@ -117,8 +119,10 @@ export default function useCocktails() {
       async (signal) => {
         let resultados;
 
+        /*
+        ANTES:
+
         if (categoria) {
-          // Si hay categoría, solo buscamos en esa categoría.
           const respuesta = await obtenerCocktailsCategoria(
             categoria,
             signal
@@ -126,8 +130,6 @@ export default function useCocktails() {
 
           resultados = respuesta.drinks || [];
         } else {
-          // Si no hay categoría, buscamos en todas las
-          // categorías que devuelve la API.
           const respuesta = await obtenerCategorias(signal);
 
           const categorias = (respuesta.drinks || [])
@@ -143,8 +145,51 @@ export default function useCocktails() {
             (respuesta) => respuesta.drinks || []
           );
         }
+        */
 
-        // Eliminar cócteles repetidos por identificador.
+        // NUEVO: filtramos por categoría e ingrediente juntos.
+        if (categoria && texto) {
+          const [respuestaCategoria, respuestaIngrediente] =
+            await Promise.all([
+              obtenerCocktailsCategoria(categoria, signal),
+              obtenerCocktailsIngrediente(texto, signal)
+            ]);
+
+          const comidasCategoria = respuestaCategoria.drinks || [];
+          const comidasIngrediente = respuestaIngrediente.drinks || [];
+
+          // Guardamos los identificadores de las comidas
+          // que contienen el ingrediente solicitado.
+          const idsIngrediente = new Set(
+            comidasIngrediente.map((comida) => comida.idDrink)
+          );
+
+          // Nos quedamos con las comidas que aparecen
+          // en ambas consultas.
+          resultados = comidasCategoria.filter((comida) =>
+            idsIngrediente.has(comida.idDrink)
+          );
+
+        } else if (categoria) {
+          // NUEVO: filtramos únicamente por categoría.
+          const respuesta = await obtenerCocktailsCategoria(
+            categoria,
+            signal
+          );
+
+          resultados = respuesta.drinks || [];
+
+        } else {
+          // NUEVO: filtramos únicamente por ingrediente.
+          const respuesta = await obtenerCocktailsIngrediente(
+            texto,
+            signal
+          );
+
+          resultados = respuesta.drinks || [];
+        }
+
+        // Conservamos la eliminación de duplicados.
         const ids = new Set();
 
         const cocktailsUnicos = resultados.filter((cocktail) => {
@@ -156,9 +201,11 @@ export default function useCocktails() {
           return true;
         });
 
+        /*
+        ANTES:
+
         console.log('Cócteles candidatos:', cocktailsUnicos.length);
 
-        // Recuperar la ficha completa de cada cóctel.
         const detalles = await Promise.all(
           cocktailsUnicos.map((cocktail) =>
             obtenerDetalleCocktail(cocktail.idDrink, signal)
@@ -169,8 +216,6 @@ export default function useCocktails() {
           .map((respuesta) => respuesta.drinks?.[0])
           .filter(Boolean);
 
-        // Comprobar el ingrediente en cualquiera de
-        // las 15 posiciones de cada receta.
         if (texto) {
           return cocktailsCompletos.filter((cocktail) =>
             contieneIngrediente(cocktail, texto)
@@ -178,12 +223,19 @@ export default function useCocktails() {
         }
 
         return cocktailsCompletos;
+        */
+
+        // NUEVO: no descargamos todas las recetas completas.
+        // La API ya ha realizado el filtrado.
+        return cocktailsUnicos;
       },
+
       (datos) => ({
         ...VISTA_INICIAL,
         tipo: 'lista',
         cocktails: ordenarCocktails(datos),
         modo: 'filtros',
+        origen: 'filtros',
         filtros: {
           categoria,
           ingrediente: texto
@@ -192,7 +244,6 @@ export default function useCocktails() {
     );
   }
 
-
   function aleatorio() {
     ejecutarPeticion(
       (signal) => obtenerCocktailAleatorio(signal),
@@ -200,7 +251,8 @@ export default function useCocktails() {
         ...VISTA_INICIAL,
         tipo: 'lista',
         cocktails: datos.drinks || [],
-        modo: 'aleatorio'
+        modo: 'aleatorio',
+        origen: 'lista'
       })
     );
   }

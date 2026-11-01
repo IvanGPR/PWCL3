@@ -8,7 +8,8 @@ export default function ListaCocktails({
   onFavorito
 }) {
   if (cocktails.length === 0) {
-    return <p>No hay cócteles para mostrar.</p>;
+    // ANTES: return <p>No hay cócteles para mostrar.</p>;
+    return <p>No hay comidas para mostrar.</p>;
   }
 
   return (

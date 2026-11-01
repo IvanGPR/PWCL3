@@ -47,8 +47,10 @@ export default function DetalleCocktail({ cocktail, onVolver }) {
         Categoría: {cocktail.strCategory || 'No especificada'}
       </p>
 
+      {/* ANTES: <p>Vaso: {cocktail.strGlass || 'No especificado'}</p> */}
+      {/* CAMBIO: las comidas tienen país o región de origen. */}
       <p>
-        Vaso: {cocktail.strGlass || 'No especificado'}
+        Origen: {cocktail.strArea || 'No especificado'}
       </p>
 
       <h3>Ingredientes</h3>

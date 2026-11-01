@@ -14,7 +14,8 @@ export default function Buscador({
   return (
     <section id="buscador">
       <label htmlFor="selecCocktail">
-        ¿Qué cóctel quieres buscar?
+        {/* ANTES: ¿Qué cóctel quieres buscar? */}
+        ¿Qué comida quieres buscar?
       </label>
 
       <form onSubmit={manejarEnvio}>

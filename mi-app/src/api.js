@@ -1,7 +1,22 @@
 
 import { obtenerCache, guardarCache } from './cache.js';
 
-const URL_BASE = 'https://www.thecocktaildb.com/api/json/v1/1/';
+// ANTES: const URL_BASE = 'https://www.thecocktaildb.com/api/json/v1/1/';
+// CAMBIO: utilizamos TheMealDB.
+const URL_BASE = 'https://www.themealdb.com/api/json/v1/1/';
+
+// NUEVO: adaptamos los datos de TheMealDB al formato anterior.
+function normalizarRespuesta(datos) {
+  return {
+    drinks: datos.meals?.map((meal) => ({
+      ...meal,
+      idDrink: meal.idMeal,
+      strDrink: meal.strMeal,
+      strDrinkThumb: meal.strMealThumb,
+      strGlass: null
+    })) ?? null
+  };
+}
 
 async function consultarAPI(url, usarCache = true, signal) {
   if (signal?.aborted) {
@@ -46,7 +61,18 @@ async function consultarAPI(url, usarCache = true, signal) {
     throw errorDatos;
   }
 
-  if (!datos || typeof datos !== 'object' || !('drinks' in datos) || (datos.drinks !== null && !Array.isArray(datos.drinks))) {
+  // ANTES:
+  // if (!datos || typeof datos !== 'object' ||
+  // !('drinks' in datos) ||
+  // (datos.drinks !== null && !Array.isArray(datos.drinks))) {
+
+  // CAMBIO: TheMealDB devuelve 'meals' en lugar de 'drinks'.
+  if (
+    !datos ||
+    typeof datos !== 'object' ||
+    !('meals' in datos) ||
+    (datos.meals !== null && !Array.isArray(datos.meals))
+  ) {
     const errorDatos = new Error('El formato de los datos no es valido');
     errorDatos.tipo = 'datos';
     throw errorDatos;
@@ -56,11 +82,16 @@ async function consultarAPI(url, usarCache = true, signal) {
     throw new DOMException('Petición cancelada', 'AbortError');
   }
 
+  // NUEVO: normalizamos antes de guardar en caché.
+  const datosNormalizados = normalizarRespuesta(datos);
+
   if (usarCache) {
-    guardarCache(url, datos);
+    // ANTES: guardarCache(url, datos);
+    guardarCache(url, datosNormalizados);
   }
 
-  return datos;
+  // ANTES: return datos;
+  return datosNormalizados;
 }
 
 export function obtenerCocktails(nombre, signal) {
