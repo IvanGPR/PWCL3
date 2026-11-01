@@ -4,11 +4,11 @@ import TarjetaCocktail from './TarjetaCocktail.jsx';
 export default function ListaCocktails({
   cocktails,
   onDetalle,
-  favoritos,
+  favoritosIds,
   onFavorito
 }) {
   if (cocktails.length === 0) {
-    return <p>No hay cocteles para mostrar</p>;
+    return <p>No hay cócteles para mostrar.</p>;
   }
 
   return (
@@ -19,9 +19,7 @@ export default function ListaCocktails({
           cocktail={cocktail}
           onDetalle={onDetalle}
           onFavorito={onFavorito}
-          esFavorito={favoritos.some(
-            (favorito) => favorito.idDrink === cocktail.idDrink
-          )}
+          esFavorito={favoritosIds.has(String(cocktail.idDrink))}
         />
       ))}
     </>

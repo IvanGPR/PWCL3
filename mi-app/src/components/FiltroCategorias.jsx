@@ -1,26 +1,24 @@
 
 export default function FiltroCategorias({
   categorias,
-  categoria,
+  seleccion,
   onCambiar,
-  estado,
-  error,
-  onReintentar,
+  carga,
   cargando
 }) {
   return (
     <section id="filtroCategorias">
       <label htmlFor="selectorCategorias">
-        Filtrar por categoria:
+        Filtrar por categoría:
       </label>
 
       <select
         id="selectorCategorias"
-        value={categoria}
+        value={seleccion}
         onChange={(evento) => onCambiar(evento.target.value)}
         disabled={cargando}
       >
-        <option value="">Selecciona una categoria</option>
+        <option value="">Selecciona una categoría</option>
 
         {categorias.map((nombre) => (
           <option key={nombre} value={nombre}>
@@ -30,17 +28,18 @@ export default function FiltroCategorias({
       </select>
 
       <div id="estadoCategorias" role="status">
-        {estado === 'cargando' && 'Cargando categorias...'}
-        {error && error}
+        {carga.estado.tipo === 'cargando' &&
+          'Cargando categorías...'}
+
+        {carga.estado.error}
       </div>
 
-      {error && (
+      {carga.estado.tipo === 'error' && (
         <button
           type="button"
-          id="reintentarCategorias"
-          onClick={onReintentar}
+          onClick={carga.reintentar}
         >
-          Reintentar carga de categorias
+          Reintentar carga de categorías
         </button>
       )}
     </section>
